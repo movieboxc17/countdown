@@ -175,23 +175,23 @@
             const fireworkContainer = document.createElement('div');
             fireworkContainer.style.position = "absolute";
             fireworkContainer.style.left = `${Math.random() * 100}vw`;
-            fireworkContainer.style.bottom = "0";
+            fireworkContainer.style.bottom = "10%";
 
             const trail = document.createElement('div');
             trail.classList.add('firework-trail');
             fireworkContainer.appendChild(trail);
 
             setTimeout(() => {
-                const count = Math.random() * 50 + 50;
+                const count = Math.random() * 20 + 30;
                 for (let i = 0; i < count; i++) {
                     const firework = document.createElement('div');
                     firework.classList.add('firework');
                     firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                    firework.style.transform = `translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px)`;
-                    firework.style.animationDuration = `${Math.random() * 1 + 0.5}s`;
+                    firework.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`;
+                    firework.style.animationDuration = `${Math.random() * 1.5 + 0.5}s`;
                     fireworkContainer.appendChild(firework);
                 }
-            }, 1000);
+            }, 800);
 
             document.body.appendChild(fireworkContainer);
 
@@ -201,7 +201,9 @@
         }
 
         function triggerFireworks() {
-            setInterval(createFirework, 500);
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createFirework, i * 500);
+            }
         }
 
         setInterval(createSnowflake, 100);
