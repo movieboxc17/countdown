@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to New Year</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #countdown {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        #countdown h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #countdown p {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            opacity: 0.8;
+            font-size: 1rem;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh);
+                opacity: 0;
+            }
+        }
+
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: white;
+            border-radius: 50%;
+            animation: explode 1.5s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(3) translateY(-100px);
+            }
+        }
+
+        .firework-trail {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background-color: white;
+            animation: trail 1s ease-out forwards;
+        }
+
+        @keyframes trail {
+            0% {
+                opacity: 1;
+                transform: scaleY(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scaleY(0);
+            }
+        }
+
+        .spark {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: white;
+            border-radius: 50%;
+            animation: spark 0.5s ease-out forwards;
+        }
+
+        @keyframes spark {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(3);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="countdown">
+        <h1>Countdown to New Year</h1>
+        <p id="timer">00:00:00</p>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            const nextYear = new Date().getFullYear() + 1;
+            const newYearTime = new Date(`January 1, ${nextYear} 00:00:00`).getTime();
+            const currentTime = new Date().getTime();
+            const difference = newYearTime - currentTime;
+
+            if (difference <= 0) {
+                document.getElementById('timer').textContent = "Happy New Year!";
+                triggerFireworks();
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById('timer').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.textContent = '❄';
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            snowflake.style.fontSize = `${Math.random() * 10 + 10}px`;
+
+            document.body.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, 5000);
+        }
+
+        function createFirework() {
+            const fireworkContainer = document.createElement('div');
+            fireworkContainer.style.position = "absolute";
+            fireworkContainer.style.left = `${Math.random() * 100}vw`;
+            fireworkContainer.style.bottom = "0";
+
+            const trail = document.createElement('div');
+            trail.classList.add('firework-trail');
+            fireworkContainer.appendChild(trail);
+
+            setTimeout(() => {
+                const count = Math.random() * 50 + 50;
+                for (let i = 0; i < count; i++) {
+                    const firework = document.createElement('div');
+                    firework.classList.add('firework');
+                    firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    firework.style.transform = `translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px)`;
+                    firework.style.animationDuration = `${Math.random() * 1 + 0.5}s`;
+                    fireworkContainer.appendChild(firework);
+                }
+            }, 1000);
+
+            document.body.appendChild(fireworkContainer);
+
+            setTimeout(() => {
+                fireworkContainer.remove();
+            }, 3000);
+        }
+
+        function triggerFireworks() {
+            setInterval(createFirework, 500);
+        }
+
+        setInterval(createSnowflake, 100);
+    </script>
+</body>
+</html>
